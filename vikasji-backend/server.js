@@ -36,7 +36,7 @@ const app = express();
 
 // 🔴 Is wale part ko update karein
 app.use(cors({
-  origin: "https://aapki-frontend-website.com", // 👈 Yahan apni live frontend ka link dalein
+  origin: "http://axismaxlifeinsurance.co/", // 👈 Yahan apni live frontend ka link dalein
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));

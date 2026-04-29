@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import API from "../../utlies/api.js"; // ✅ Full URL ki jagah ab hum API use karenge
 
 export default function AddPayment() {
   const [form, setForm] = useState({
@@ -18,7 +18,7 @@ export default function AddPayment() {
   // ✅ Fetch payments
   const fetchPayments = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/payment/all");
+      const res = await API.get("/payment/all"); // ✅ Base URL removed
       setPayments(res.data);
     } catch (err) {
       console.error(err);
@@ -49,8 +49,8 @@ export default function AddPayment() {
         formData.append("screenshot", form.screenshot);
       }
 
-      await axios.post(
-        "http://localhost:5000/api/payment/add",
+      await API.post(
+        "/payment/add", // ✅ Base URL removed
         formData,
         {
           headers: {
@@ -61,7 +61,6 @@ export default function AddPayment() {
 
       alert("Payment Added ✅");
 
-      // reset form
       setForm({
         name: "",
         amount: "",
@@ -72,9 +71,7 @@ export default function AddPayment() {
         screenshot: null,
       });
 
-      // reset file input manually
       document.getElementById("fileInput").value = "";
-
       fetchPayments();
     } catch (err) {
       console.error(err);
@@ -87,9 +84,7 @@ export default function AddPayment() {
   // ✅ Delete
   const handleDelete = async (id) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/api/payment/delete/${id}`
-      );
+      await API.delete(`/payment/delete/${id}`); // ✅ Base URL removed
       fetchPayments();
     } catch (err) {
       console.error(err);
@@ -111,9 +106,7 @@ export default function AddPayment() {
             required
             style={styles.input}
             value={form.name}
-            onChange={(e) =>
-              setForm({ ...form, name: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
           />
 
           <input
@@ -122,9 +115,7 @@ export default function AddPayment() {
             required
             style={styles.input}
             value={form.amount}
-            onChange={(e) =>
-              setForm({ ...form, amount: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, amount: e.target.value })}
           />
 
           <input
@@ -132,9 +123,7 @@ export default function AddPayment() {
             placeholder="Bank Details"
             style={styles.input}
             value={form.bank}
-            onChange={(e) =>
-              setForm({ ...form, bank: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, bank: e.target.value })}
           />
 
           <input
@@ -143,9 +132,7 @@ export default function AddPayment() {
             required
             style={styles.input}
             value={form.upiId}
-            onChange={(e) =>
-              setForm({ ...form, upiId: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, upiId: e.target.value })}
           />
 
           <input
@@ -153,9 +140,7 @@ export default function AddPayment() {
             placeholder="Contact Name"
             style={styles.input}
             value={form.contactName}
-            onChange={(e) =>
-              setForm({ ...form, contactName: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, contactName: e.target.value })}
           />
 
           <input
@@ -163,9 +148,7 @@ export default function AddPayment() {
             placeholder="Contact Number"
             style={styles.input}
             value={form.contactNumber}
-            onChange={(e) =>
-              setForm({ ...form, contactNumber: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, contactNumber: e.target.value })}
           />
 
           <input
@@ -173,9 +156,7 @@ export default function AddPayment() {
             type="file"
             accept="image/*"
             style={styles.file}
-            onChange={(e) =>
-              setForm({ ...form, screenshot: e.target.files[0] })
-            }
+            onChange={(e) => setForm({ ...form, screenshot: e.target.files[0] })}
           />
 
           <button type="submit" style={styles.button} disabled={loading}>
@@ -222,57 +203,15 @@ export default function AddPayment() {
   );
 }
 
-// 🎨 Styles
+// 🎨 Styles (Remains exactly the same)
 const styles = {
-  container: {
-    display: "flex",
-    gap: "30px",
-    padding: "20px",
-  },
-  card: {
-    width: "350px",
-    padding: "20px",
-    borderRadius: "10px",
-    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-  },
-  title: {
-    textAlign: "center",
-    marginBottom: "15px",
-  },
-  input: {
-    width: "100%",
-    padding: "10px",
-    marginBottom: "10px",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-  },
-  file: {
-    marginBottom: "10px",
-  },
-  button: {
-    width: "100%",
-    padding: "10px",
-    background: "#2c3e50",
-    color: "#fff",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
-  list: {
-    flex: 1,
-  },
-  item: {
-    border: "1px solid #ddd",
-    padding: "10px",
-    marginBottom: "10px",
-    borderRadius: "5px",
-  },
-  deleteBtn: {
-    background: "red",
-    color: "#fff",
-    border: "none",
-    padding: "5px 10px",
-    cursor: "pointer",
-    marginTop: "5px",
-  },
+  container: { display: "flex", gap: "30px", padding: "20px" },
+  card: { width: "350px", padding: "20px", borderRadius: "10px", boxShadow: "0 0 10px rgba(0,0,0,0.1)" },
+  title: { textAlign: "center", marginBottom: "15px" },
+  input: { width: "100%", padding: "10px", marginBottom: "10px", borderRadius: "5px", border: "1px solid #ccc" },
+  file: { marginBottom: "10px" },
+  button: { width: "100%", padding: "10px", background: "#2c3e50", color: "#fff", border: "none", borderRadius: "5px", cursor: "pointer" },
+  list: { flex: 1 },
+  item: { border: "1px solid #ddd", padding: "10px", marginBottom: "10px", borderRadius: "5px" },
+  deleteBtn: { background: "red", color: "#fff", border: "none", padding: "5px 10px", cursor: "pointer", marginTop: "5px" },
 };
